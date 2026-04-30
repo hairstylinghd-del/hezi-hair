@@ -1,35 +1,53 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { sendWhatsApp, buildDayMessage, buildHourMessage } from '@/lib/whatsapp'
 
-:root {
-  --bg: #0d0d0f;
-  --surface: #16161a;
-  --surface2: #1e1e24;
-  --surface3: #26262e;
-  --border: #2e2e38;
-  --accent: #7c6aff;
-  --accent2: #a78bfa;
-  --accent-soft: rgba(124,106,255,0.12);
-  --green: #22c55e;
-  --green-soft: rgba(34,197,94,0.12);
-  --red: #ef4444;
-  --red-soft: rgba(239,68,68,0.12);
-  --amber: #f59e0b;
-  --amber-soft: rgba(245,158,11,0.12);
-  --text: #f0f0f5;
-  --text2: #9090a8;
-  --text3: #5a5a6e;
-  --radius: 14px;
-  --radius-sm: 8px;
+export async function GET() {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const now = new Date()
+  const sent = { day: 0, hour: 0 }
+
+  // Appointments in ~24 hours
+  const in23h = new Date(now.getTime() + 23.5 * 3600000).toISOString()
+  const in25h = new Date(now.getTime() + 24.5 * 3600000).toISOString()
+
+  const { data: dayAppts } = await supabase
+    .from('appointments')
+    .select('*, clients(*), services(*)')
+    .eq('reminder_sent', 'none')
+    .gte('scheduled_at', in23h)
+    .lte('scheduled_at', in25h)
+
+  for (const appt of dayAppts || []) {
+    const time = new Date(appt.scheduled_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+    const msg = buildDayMessage(appt.clients.first_name, time, appt.services.name)
+    await sendWhatsApp(appt.clients.phone, msg)
+    await supabase.from('appointments').update({ reminder_sent: 'day' }).eq('id', appt.id)
+    sent.day++
+  }
+
+  // Appointments in ~1 hour
+  const in45m = new Date(now.getTime() + 0.75 * 3600000).toISOString()
+  const in75m = new Date(now.getTime() + 1.25 * 3600000).toISOString()
+
+  const { data: hourAppts } = await supabase
+    .from('appointments')
+    .select('*, clients(*), services(*)')
+    .in('reminder_sent', ['none', 'day'])
+    .gte('scheduled_at', in45m)
+    .lte('scheduled_at', in75m)
+
+  for (const appt of hourAppts || []) {
+    const time = new Date(appt.scheduled_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+    const msg = buildHourMessage(appt.clients.first_name, time)
+    await sendWhatsApp(appt.clients.phone, msg)
+    await supabase.from('appointments').update({ reminder_sent: 'both' }).eq('id', appt.id)
+    sent.hour++
+  }
+
+  return NextResponse.json({ success: true, sent })
 }
-
-body {
-  font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  direction: rtl;
-}
-
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--surface); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
