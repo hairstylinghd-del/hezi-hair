@@ -136,7 +136,7 @@ export default function Home() {
     `${c.first_name} ${c.last_name} ${c.phone}`.includes(search)
   )
 
-  const s: Record<string, React.CSSProperties | ((...args: any[]) => React.CSSProperties)> = {
+  const s: any = {
     app: { display:'flex', minHeight:'100vh', fontFamily:"'Heebo',sans-serif" },
     sidebar: { width:200, background:'#16161a', borderLeft:'1px solid #2e2e38', display:'flex', flexDirection:'column', padding:'20px 0', position:'fixed', right:0, top:0, bottom:0, zIndex:100 },
     logo: { padding:'0 20px 24px', display:'flex', alignItems:'center', gap:10 },
@@ -144,20 +144,20 @@ export default function Home() {
     logoText: { fontSize:17, fontWeight:800, color:'#f0f0f5' },
     nav: { padding:'0 10px', flex:1 },
     navLabel: { fontSize:10, fontWeight:700, letterSpacing:2, color:'#5a5a6e', textTransform:'uppercase', padding:'14px 12px 6px' },
-    navItem: (active: boolean): React.CSSProperties => ({ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderRadius:8, cursor:'pointer', color: active ? '#a78bfa' : '#9090a8', background: active ? 'rgba(124,106,255,0.12)' : 'transparent', fontWeight: active ? 600 : 500, fontSize:14, marginBottom:2, transition:'all 0.15s' }),
+    navItem: (active: boolean) => ({ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderRadius:8, cursor:'pointer', color: active ? '#a78bfa' : '#9090a8', background: active ? 'rgba(124,106,255,0.12)' : 'transparent', fontWeight: active ? 600 : 500, fontSize:14, marginBottom:2, transition:'all 0.15s' }),
     main: { marginRight:200, flex:1, display:'flex', flexDirection:'column' },
     topbar: { background:'#16161a', borderBottom:'1px solid #2e2e38', padding:'16px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:50 },
     content: { padding:'24px 28px', flex:1 },
     statsGrid: { display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14, marginBottom:24 },
-    statCard: (color: string): React.CSSProperties => ({ background:'#16161a', border:'1px solid #2e2e38', borderRadius:14, padding:18 }),
+    statCard: (color: string) => ({ background:'#16161a', border:'1px solid #2e2e38', borderRadius:14, padding:18 }),
     card: { background:'#16161a', border:'1px solid #2e2e38', borderRadius:14, overflow:'hidden', marginBottom:16 },
     cardHeader: { padding:'15px 18px', borderBottom:'1px solid #2e2e38', display:'flex', alignItems:'center', justifyContent:'space-between' },
     cardTitle: { fontSize:15, fontWeight:700 },
     cardBody: { padding:18 },
-    btn: (variant: string): React.CSSProperties => ({ display:'inline-flex', alignItems:'center', gap:6, padding: variant==='sm' ? '6px 14px' : '9px 18px', borderRadius:8, fontSize: variant==='sm' ? 12 : 13, fontWeight:600, cursor:'pointer', border:'none', fontFamily:"'Heebo',sans-serif", background: variant==='primary' ? '#7c6aff' : '#1e1e24', color: variant==='primary' ? 'white' : '#9090a8', transition:'all 0.15s' }),
+    btn: (variant: string) => ({ display:'inline-flex', alignItems:'center', gap:6, padding: variant==='sm' ? '6px 14px' : '9px 18px', borderRadius:8, fontSize: variant==='sm' ? 12 : 13, fontWeight:600, cursor:'pointer', border:'none', fontFamily:"'Heebo',sans-serif", background: variant==='primary' ? '#7c6aff' : '#1e1e24', color: variant==='primary' ? 'white' : '#9090a8', transition:'all 0.15s' }),
     apptItem: { display:'flex', alignItems:'center', gap:12, padding:'11px 13px', background:'#1e1e24', borderRadius:8, border:'1px solid #2e2e38', marginBottom:8 },
-    avatar: (name: string): React.CSSProperties => ({ width:34, height:34, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, flexShrink:0, background: avatarColor(name)+'22', color: avatarColor(name) }),
-    badge: (type: string): React.CSSProperties => ({ fontSize:11, fontWeight:600, padding:'2px 9px', borderRadius:20, background: type==='vip' ? 'rgba(124,106,255,0.12)' : type==='new' ? 'rgba(34,197,94,0.12)' : 'rgba(245,158,11,0.12)', color: type==='vip' ? '#a78bfa' : type==='new' ? '#22c55e' : '#f59e0b' }),
+    avatar: (name: string) => ({ width:34, height:34, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, flexShrink:0, background: avatarColor(name)+'22', color: avatarColor(name) }),
+    badge: (type: string) => ({ fontSize:11, fontWeight:600, padding:'2px 9px', borderRadius:20, background: type==='vip' ? 'rgba(124,106,255,0.12)' : type==='new' ? 'rgba(34,197,94,0.12)' : 'rgba(245,158,11,0.12)', color: type==='vip' ? '#a78bfa' : type==='new' ? '#22c55e' : '#f59e0b' }),
     input: { width:'100%', background:'#1e1e24', border:'1px solid #2e2e38', borderRadius:8, padding:'10px 14px', fontSize:14, color:'#f0f0f5', fontFamily:"'Heebo',sans-serif", outline:'none' },
     label: { fontSize:12, fontWeight:600, color:'#9090a8', marginBottom:5, display:'block', textTransform:'uppercase', letterSpacing:0.5 },
     overlay: { position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', zIndex:200, display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(4px)' },
@@ -169,12 +169,12 @@ export default function Home() {
     formGroup: { marginBottom:16 },
     formRow: { display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 },
     toastBox: { position:'fixed', bottom:24, left:24, zIndex:300, background:'#16161a', border:'1px solid #2e2e38', borderRadius:8, padding:'12px 18px', fontSize:13, fontWeight:600, boxShadow:'0 4px 24px rgba(0,0,0,0.4)' },
-    statusDot: (open: boolean): React.CSSProperties => ({ width:8, height:8, borderRadius:'50%', background: open ? '#22c55e' : '#ef4444', boxShadow: open ? '0 0 8px #22c55e' : 'none' }),
+    statusDot: (open: boolean) => ({ width:8, height:8, borderRadius:'50%', background: open ? '#22c55e' : '#ef4444', boxShadow: open ? '0 0 8px #22c55e' : 'none' }),
   }
 
   const Modal = ({ id, title, children, onSave }: { id: string, title: string, children: React.ReactNode, onSave: () => void }) => (
     modal === id ? (
-      <div style={s.overlay} onClick={e => e.target === e.currentTarget && setModal('')}>
+      <div style={s.overlay} onClick={(e: any) => e.target === e.currentTarget && setModal('')}>
         <div style={s.modalBox}>
           <div style={s.modalHeader}>
             <div style={s.modalTitle}>{title}</div>
@@ -192,7 +192,6 @@ export default function Home() {
 
   return (
     <div style={s.app}>
-      {/* SIDEBAR */}
       <aside style={s.sidebar}>
         <div style={s.logo}>
           <div style={s.logoIcon}>✂</div>
@@ -224,9 +223,7 @@ export default function Home() {
         </div>
       </aside>
 
-      {/* MAIN */}
       <main style={s.main}>
-        {/* TOPBAR */}
         <div style={s.topbar}>
           <div>
             <div style={{ fontSize:18, fontWeight:800 }}>
@@ -257,10 +254,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* CONTENT */}
         <div style={s.content}>
 
-          {/* DASHBOARD */}
           {page==='dashboard' && (
             <>
               <div style={s.statsGrid}>
@@ -276,7 +271,6 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-
               <div style={s.card}>
                 <div style={s.cardHeader}>
                   <div style={s.cardTitle}>📅 תורים להיום</div>
@@ -288,7 +282,7 @@ export default function Home() {
                     todayAppts.sort((a,b) => a.scheduled_at.localeCompare(b.scheduled_at)).map(a => (
                       <div key={a.id} style={s.apptItem}>
                         <div style={{ fontSize:13, fontWeight:700, color:'#a78bfa', minWidth:44 }}>{formatTime(a.scheduled_at)}</div>
-                        <div style={s.avatar(`${a.clients?.first_name||''}`)}>
+                        <div style={s.avatar(a.clients?.first_name||'')}>
                           {initials(a.clients?.first_name||'', a.clients?.last_name||'')}
                         </div>
                         <div style={{ flex:1 }}>
@@ -308,7 +302,6 @@ export default function Home() {
             </>
           )}
 
-          {/* CALENDAR */}
           {page==='calendar' && (
             <div style={s.card}>
               <div style={s.cardHeader}>
@@ -346,7 +339,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* CLIENTS */}
           {page==='clients' && (
             <div style={s.card}>
               <div style={{ overflowX:'auto' }}>
@@ -388,7 +380,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* SERVICES */}
           {page==='services' && (
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:14 }}>
               {services.map(sv => (
@@ -407,7 +398,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* STATS */}
           {page==='stats' && (
             <>
               <div style={s.statsGrid}>
@@ -423,7 +413,6 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-
               <div style={s.card}>
                 <div style={s.cardHeader}><div style={s.cardTitle}>👑 לקוחות אחרונים</div></div>
                 <div style={s.cardBody}>
@@ -444,7 +433,6 @@ export default function Home() {
         </div>
       </main>
 
-      {/* MODAL - NEW APPOINTMENT */}
       <Modal id="appt" title="📅 תור חדש" onSave={saveAppointment}>
         <div style={s.formGroup}>
           <label style={s.label}>לקוח</label>
@@ -476,7 +464,6 @@ export default function Home() {
         </div>
       </Modal>
 
-      {/* MODAL - NEW CLIENT */}
       <Modal id="client" title="👤 לקוח חדש" onSave={saveClient}>
         <div style={s.formRow}>
           <div style={s.formGroup}>
@@ -498,7 +485,6 @@ export default function Home() {
         </div>
       </Modal>
 
-      {/* MODAL - NEW SERVICE */}
       <Modal id="service" title="✂️ שירות חדש" onSave={saveService}>
         <div style={s.formGroup}>
           <label style={s.label}>שם השירות</label>
@@ -520,7 +506,6 @@ export default function Home() {
         </div>
       </Modal>
 
-      {/* TOAST */}
       {toast && <div style={s.toastBox}>{toast}</div>}
     </div>
   )
